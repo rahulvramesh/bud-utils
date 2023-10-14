@@ -122,7 +122,7 @@ def register_node(client: DaprClient, node_info: dict)->None:
         logger.error(f"Error in register_node: {str(e)}")
         raise e
 
-def publish_event() -> None:
+
     """
     Publish an event to the Dapr pub/sub component.
     """
