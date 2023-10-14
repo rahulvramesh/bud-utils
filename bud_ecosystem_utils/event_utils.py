@@ -16,7 +16,7 @@ def publish_result(client: DaprClient, event: dict) -> None:
             "session_id": event['session_id'],
             "node_id": event["node_id"],
             "status": event["status"],
-            "node_type":  event["node_name"],
+            "node_type":  event["node_type"],
             "data": event["data"],
         }
         client.publish_event(
@@ -42,7 +42,7 @@ def publish_activity(client: DaprClient, event: dict) -> None :
         
         activity = {
             "session_id": event['session_id'],
-            "from": event["node_name"],
+            "from": event["node_type"],
             "agent_id": event["agent_id"],
             "msg": event["msg"],
         }
