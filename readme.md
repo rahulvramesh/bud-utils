@@ -1,0 +1,1 @@
+poetry export --output requirements.txt
