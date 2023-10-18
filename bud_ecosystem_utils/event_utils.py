@@ -2,7 +2,7 @@ import json
 import os
 import logging
 from dapr.clients import DaprClient
-from logger import setup_logger
+from bud_ecosystem_utils.logger import setup_logger
 
 
 logger = setup_logger(__name__, logging.DEBUG)
