@@ -10,6 +10,24 @@ EVENT_PUBSUB_NAME = os.getenv("EVENT_PUBSUB_NAME", "bud-redis-queue")
 EVENT_PUBSUB_TOPIC = os.getenv("EVENT_PUBSUB_TOPIC", "activities")
 RESULT_TOPIC = os.getenv("RESULT_TOPIC", "output-aggregator")
 
+def publish_error_to_client(client: DaprClient, event: dict) -> None:
+    try:
+        payload = {
+            "session_id": event['session_id'],
+            "status": "error",
+            "data": event["data"],
+        }
+        client.publish_event(
+            pubsub_name=EVENT_PUBSUB_NAME,
+            topic_name=RESULT_TOPIC,
+            data=json.dumps(payload),
+            data_content_type="application/json",
+        )
+        logger.info("Response Sent Successfully")
+    except Exception as e:
+        logger.error(f"Error in send_response: {e}")
+        raise e
+    
 def publish_result(client: DaprClient, event: dict) -> None:
     try:
         payload = {
