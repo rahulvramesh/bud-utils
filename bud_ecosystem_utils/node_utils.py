@@ -11,8 +11,10 @@ from dapr.clients import DaprClient
 from dapr.clients.grpc._state import StateOptions, Concurrency, Consistency
 
 # Set up logging
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
-logger = logging.getLogger(__name__)
+from logger import setup_logger, apm_client
+
+logger = setup_logger(__name__, logging.DEBUG)
+
 
 # Constants for state store and service registry
 STORE_NAME = os.getenv("BUD_STATE_STORE", "bud-state-store")

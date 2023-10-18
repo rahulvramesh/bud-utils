@@ -1,10 +1,10 @@
 import json
-import logging
 import os
 from dapr.clients import DaprClient
+from logger import setup_logger, apm_client
+import logging
 
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
-logger = logging.getLogger(__name__)
+logger = setup_logger(__name__, logging.DEBUG)
 
 EVENT_PUBSUB_NAME = os.getenv("EVENT_PUBSUB_NAME", "bud-redis-queue")
 EVENT_PUBSUB_TOPIC = os.getenv("EVENT_PUBSUB_TOPIC", "activities")
