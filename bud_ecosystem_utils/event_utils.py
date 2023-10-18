@@ -9,6 +9,7 @@ logger = logging.getLogger(__name__)
 EVENT_PUBSUB_NAME = os.getenv("EVENT_PUBSUB_NAME", "bud-redis-queue")
 EVENT_PUBSUB_TOPIC = os.getenv("EVENT_PUBSUB_TOPIC", "activities")
 RESULT_TOPIC = os.getenv("RESULT_TOPIC", "output-aggregator")
+CLIENT_TOPIC = os.getenv("RESULT_TOPIC", "client-error")
 
 def publish_error_to_client(client: DaprClient, event: dict) -> None:
     try:
