@@ -2,6 +2,7 @@ import logging
 from elasticapm.handlers.logging import LoggingHandler
 from elasticapm.contrib.starlette import make_apm_client
 from pythonjsonlogger import jsonlogger
+import os
 
 
 # Setup Elastic APM configuration
