@@ -11,7 +11,7 @@ from dapr.clients import DaprClient
 from dapr.clients.grpc._state import StateOptions, Concurrency, Consistency
 
 # Set up logging
-from logger import setup_logger, apm_client
+from logger import setup_logger
 
 logger = setup_logger(__name__, logging.DEBUG)
 

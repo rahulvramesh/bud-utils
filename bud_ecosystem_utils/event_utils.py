@@ -1,8 +1,9 @@
 import json
 import os
-from dapr.clients import DaprClient
-from logger import setup_logger, apm_client
 import logging
+from dapr.clients import DaprClient
+from logger import setup_logger
+
 
 logger = setup_logger(__name__, logging.DEBUG)
 
