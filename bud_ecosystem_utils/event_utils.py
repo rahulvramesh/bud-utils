@@ -20,7 +20,7 @@ def publish_error_to_client(client: DaprClient, event: dict) -> None:
         }
         client.publish_event(
             pubsub_name=EVENT_PUBSUB_NAME,
-            topic_name=RESULT_TOPIC,
+            topic_name=CLIENT_TOPIC,
             data=json.dumps(payload),
             data_content_type="application/json",
         )
