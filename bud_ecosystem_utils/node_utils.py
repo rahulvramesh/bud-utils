@@ -33,19 +33,11 @@ def store_node(client: DaprClient, node_info: dict) -> None:
         KeyError: If any of the required keys in node_info are missing.
     """
     try:
-        job_topic = node_info['job_topic']
-        
-        state_value = json.dumps({
-            "name": node_info['name'],
-            "type": node_info['type'],
-            "service": job_topic,
-            "topic": job_topic,
-        })
 
         client.save_state(
             store_name=STORE_NAME,
-            key=job_topic,
-            value=state_value,
+            key=node_info['topic'],
+            value=node_info,
             state_metadata={"contentType": "application/json"},
         )
 
