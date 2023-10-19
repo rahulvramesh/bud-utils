@@ -36,7 +36,7 @@ def store_node(client: DaprClient, node_info: dict) -> None:
 
         client.save_state(
             store_name=STORE_NAME,
-            key=node_info['topic'],
+            key=json.dumps(node_info['topic']),
             value=node_info,
             state_metadata={"contentType": "application/json"},
         )
