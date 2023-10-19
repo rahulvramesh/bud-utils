@@ -26,7 +26,7 @@ def store_node(client: DaprClient, node_info: dict) -> None:
 
     Args:
         client (DaprClient): The Dapr client instance.
-        node_info (dict): A dictionary containing the node information. 
+        node_info (str): A dictionary containing the node information. 
                           It should have keys: 'name', 'type', 'job_topic'.
 
     Raises:
@@ -36,12 +36,12 @@ def store_node(client: DaprClient, node_info: dict) -> None:
 
         client.save_state(
             store_name=STORE_NAME,
-            key=json.dumps(node_info['topic']),
-            value=node_info,
+            key=node_info.get('topic'),
+            value=json.dumps(node_info),
             state_metadata={"contentType": "application/json"},
         )
 
-        logger.info(f"State for {job_topic} initialized successfully.")
+        logger.info(f"State for {node_info.get('topic')} initialized successfully.")
         
     except KeyError:
         logger.error("Required keys missing in node_info.")
@@ -99,14 +99,15 @@ def register_node(client: DaprClient, node_info: dict)->None:
 
     Args:
         client (DaprClient): The Dapr client instance.
-        node_info (dict): A dictionary containing the node information. 
+        node_info (json): A dictionary containing the node information. 
                           It should have keys: 'name', 'type', 'job_topic'.
 
     Raises:
         KeyError: If any of the required keys in node_info are missing.
     """
     try:
-        job_topic = node_info['job_topic']
+    
+        job_topic = node_info.get("topic")
         store_node(client, node_info)
         update_service_registry(client, job_topic)
     except KeyError:
@@ -115,9 +116,3 @@ def register_node(client: DaprClient, node_info: dict)->None:
     except Exception as e:
         logger.error(f"Error in register_node: {str(e)}")
         raise e
-
-
-    """
-    Publish an event to the Dapr pub/sub component.
-    """
-    pass
