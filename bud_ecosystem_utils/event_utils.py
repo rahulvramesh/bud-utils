@@ -69,7 +69,7 @@ def publish_activity(client: DaprClient, event: dict) -> None :
         
         client.publish_event(
             pubsub_name=EVENT_PUBSUB_NAME,
-            topic=EVENT_PUBSUB_TOPIC,
+            topic_name=EVENT_PUBSUB_TOPIC,
             data=json.dumps(activity),
             data_content_type="application/json",
         )
