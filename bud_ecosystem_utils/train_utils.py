@@ -1,8 +1,8 @@
 import os
-import logging
 import time
+import logging
 from accelerate.state import PartialState
-from ray.job_submission import JobSubmissionClient
+from ray.job_submission import JobSubmissionClient, JobStatus
 
 from bud_ecosystem_utils.blob import BlobService
 
@@ -53,7 +53,7 @@ class MultiProcessAdapter(logging.LoggerAdapter):
                 msg, kwargs = self.process(msg, kwargs)
                 self.logger.log(level, msg, *args, **kwargs)
                 if publish_log:
-                    self.BLOB_SERVICE.upload_file(blob_key, self.logger.root.handlers[0].baseFilename)
+                    self.BLOB_SERVICE.upload_file(blob_key, filepath=self.logger.root.handlers[0].baseFilename)
                     self.LAST_LOGGED_AT = time.time()
             elif in_order:
                 state = PartialState()
@@ -62,7 +62,7 @@ class MultiProcessAdapter(logging.LoggerAdapter):
                         msg, kwargs = self.process(msg, kwargs)
                         self.logger.log(level, msg, *args, **kwargs)
                         if publish_log:
-                            self.BLOB_SERVICE.upload_file(blob_key, self.logger.root.handlers[0].baseFilename)
+                            self.BLOB_SERVICE.upload_file(blob_key, filepath=self.logger.root.handlers[0].baseFilename)
                             self.LAST_LOGGED_AT = time.time()
                     state.wait_for_everyone()
 
@@ -112,3 +112,12 @@ def submit_job_to_ray(data, entrypoint=None, runtime_env=None):
         runtime_env=runtime_env,
     )
     return job_id
+
+
+def stop_ray_job(job_id):
+    # TODO: Handle invalid job_id, request failures
+    client = JobSubmissionClient(os.environ["RAY_HEAD_URL"])
+    status = client.get_job_status(job_id)
+    if status in [JobStatus.RUNNING, JobStatus.PENDING]:
+        return client.stop_job(job_id)
+    return True
