@@ -6,7 +6,6 @@ authors = ["Rahul V Ramesh <rahulvramesh@hotmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-protobuf = "> 3.10.0, < 3.20.1"
 dapr = "^1.11.0"
 accelerate = "^0.23.0"
 tqdm = "^4.66.0"
