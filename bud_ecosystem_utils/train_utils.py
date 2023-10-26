@@ -80,11 +80,15 @@ def submit_job_to_ray(data, entrypoint=None, runtime_env=None):
     
     _runtime_env = runtime_env or {}
     blob_provider = os.environ.get("BLOB_PROVIDER", "s3")
+
+    with open("requirements.txt", "r") as fin:
+        requirements = fin.read().splitlines()
+
     runtime_env = {
         "working_dir": "./",
         "excludes": [".env", ".env.example", "poetry.lock", "run.sh", "node.py", "models.py"],
         # "py_modules": ["modules", "config", "utils"],
-        "pip": "requirements.txt",
+        "pip": {"packages": requirements, "pip_version": "==23.3.1;python_version=='3.9'"},
         "env_vars": {
             "BLOB_PROVIDER": blob_provider,
             "LOG_PUBLISH_INTERVAL": str(os.environ.get("LOG_PUBLISH_INTERVAL", 30))
