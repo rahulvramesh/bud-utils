@@ -71,7 +71,8 @@ def submit_job_to_ray(data, entrypoint=None, runtime_env=None):
     if isinstance(data, dict):
         args = ()
         for key, value in data.items():
-            args += (f"--{key}", str(value))
+            if value is not None:
+                args += (f"--{key}", str(value))
     elif isinstance(data, tuple):
         args = data
     else:
