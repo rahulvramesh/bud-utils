@@ -67,7 +67,7 @@ class MultiProcessAdapter(logging.LoggerAdapter):
                     state.wait_for_everyone()
 
 
-def submit_job_to_ray(data, entrypoint=None, runtime_env=None):
+def submit_job_to_ray(data, session_id, node_id, callback_id, entrypoint=None, runtime_env=None):
     if isinstance(data, dict):
         args = ()
         for key, value in data.items():
@@ -108,6 +108,11 @@ def submit_job_to_ray(data, entrypoint=None, runtime_env=None):
     for key in keys:
         runtime_env["env_vars"][key] = os.environ[key]
     runtime_env.update(_runtime_env)
+
+    runtime_env["env_vars"]["SESSION_ID"] = session_id
+    runtime_env["env_vars"]["NODE_ID"] = node_id
+    runtime_env["env_vars"]["CALLBACK_ID"] = callback_id
+    runtime_env["env_vars"]["INTERNAL_ENDPOINT"] = os.environ["INTERNAL_ENDPOINT"]
 
     client = JobSubmissionClient(os.environ["RAY_HEAD_URL"])
     job_id = client.submit_job(
